@@ -1,12 +1,16 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QDateEdit, QLineEdit, QPushButton, QComboBox
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QDateEdit, QLineEdit, QPushButton, QComboBox, QMessageBox
 from DataBase.utils_db import add_cost
+from PyQtclass.image_label import ImageTextLabel, Line_widget
 
 class Window3(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        label = QLabel('Вывод денег')
+        label = ImageTextLabel('Вывод денег', 'image/title/forest.jpeg')
         layout.addWidget(label)
+
+        line = Line_widget()
+        layout.addWidget(line)
         self.setLayout(layout)
 
         data = QLabel('Введите дату траты средств')
@@ -37,3 +41,11 @@ class Window3(QWidget):
 
     def spend_money(self):
         add_cost(self.money_input.text(), self.data_input.date().toString('dd.MM.yyyy'), self.category_input.currentText())
+
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Icon.Information)
+        msg_box.setText("Информация загружена")
+        msg_box.setWindowTitle("ИНФОРМАЦИОННОЕ СООБЩЕНИЕ")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+
+        msg_box.exec()

@@ -1,12 +1,16 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QDateEdit, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QDateEdit, QLineEdit, QPushButton, QMessageBox
 from DataBase.utils_db import add_refill
+from PyQtclass.image_label import ImageTextLabel, Line_widget
 
 class Window2(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        label = QLabel('Поступление средств')
+        label = ImageTextLabel('Поступление средств', 'image/title/forest.jpeg')
         layout.addWidget(label)
+
+        line = Line_widget()
+        layout.addWidget(line)
 
         data = QLabel('Введите дату поступления средств')
         self.data_input = QDateEdit()
@@ -29,4 +33,12 @@ class Window2(QWidget):
 
     def get_money(self):
         add_refill(self.money_input.text(), self.data_input.date().toString('dd.MM.yyyy'))
+
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Icon.Information)
+        msg_box.setText("Информация загружена")
+        msg_box.setWindowTitle("ИНФОРМАЦИОННОЕ СООБЩЕНИЕ")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+
+        msg_box.exec()
 

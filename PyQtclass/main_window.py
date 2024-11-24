@@ -4,6 +4,7 @@ from PyQtclass.window2 import Window2
 from PyQtclass.window3 import Window3
 from PyQtclass.window4 import Window4
 from PyQtclass.window5 import Window5
+from PyQt6.QtGui import QPainter, QPixmap
 
 
 class MainWindow(QMainWindow):
@@ -59,6 +60,13 @@ class MainWindow(QMainWindow):
         center_widget.setLayout(main_layout)
         self.setCentralWidget(center_widget)
 
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        pixmap = QPixmap("image\\title\\fon.jpg")
+        painter.drawPixmap(self.rect(), pixmap)
+
     def switch_window(self, index):
+        if index == 0:
+            self.Window1.update()
         self.stack_widget.setCurrentIndex(index)
 
