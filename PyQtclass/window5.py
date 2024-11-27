@@ -19,6 +19,20 @@ class Window5(QWidget):
         self.setLayout(layout)
 
         self.get_statisticButton = QPushButton('Получить статистику', self)
+        self.get_statisticButton.setStyleSheet(
+            f"""
+                                          QPushButton {{
+                                              background-color: #004953;
+                                              color: #fcfcee;
+                                              font-size: 16px;
+                                              font-weight: bold;
+                                              border-radius: 10px;
+                                              padding: 10px;
+                                          }}
+                                          QPushButton:hover {{
+                                              background-color: #2a6478;
+                                          }}
+                                          """)
         self.get_statisticButton.clicked.connect(self.get_statistic)
         self.get_statisticButton.setMinimumSize(300, 300)
         layout.addWidget(self.get_statisticButton)

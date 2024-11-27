@@ -1,11 +1,18 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QMessageBox
 from PyQtclass.image_label import ImageTextLabel, Line_widget
-
 from DataBase.utils_db import get_allData, delete_data
+
+
 class Window4(QWidget):
     def __init__(self):
         super().__init__()
         self.index = 0
+
+        self.main_layout = QVBoxLayout()
+        self.setLayout(self.main_layout)
+        self.create_button(self.index)
+
+    def create_button(self, index):
         result1, result2 = get_allData()
         self.button_list = []
         button4 = []
@@ -27,102 +34,108 @@ class Window4(QWidget):
             })
         if len(button4) != 0:
             self.button_list.append(button4)
-        self.create_button(self.index)
+        self.clear_layout(self.main_layout)
 
-    def create_button(self, index):
-        layout = QVBoxLayout()
-
-        label_text = ImageTextLabel('Изменение данных', 'image/title/forest.jpeg')
-        layout.addWidget(label_text)
-
-        self.buttons = []
+        label_text = ImageTextLabel('Изменения в БД', 'image/title/forest.jpeg')
+        self.main_layout.addWidget(label_text)
 
         line = Line_widget()
-        layout.addWidget(line)
+        self.main_layout.addWidget(line)
 
         button_layout = QHBoxLayout()
-        for i in self.button_list[index]:
-            button = QPushButton(f"id{i['id']}")
+        for button_data in self.button_list[index]:
+            button = QPushButton(f"id{button_data['id']}")
+            if button_data["color"] == "red":
+                button.setStyleSheet(
+                    """
+                    QPushButton {
+                        background-color: #cc0605;
+                        color: #fcfcee;
+                        font-size: 16px;
+                        font-weight: bold;
+                        border-radius: 10px;
+                        padding: 10px;
+                    }
+                    QPushButton:hover {
+                        background-color: #ce2029;
+                    }
+                    """
+                )
+            else:
+                button.setStyleSheet(
+                    """
+                    QPushButton {
+                        background-color: #71bc78;
+                        color: #fcfcee;
+                        font-size: 16px;
+                        font-weight: bold;
+                        border-radius: 10px;
+                        padding: 10px;
+                    }
+                    QPushButton:hover {
+                        background-color: #aaf0d1;
+                    }
+                    """
+                )
+            button.clicked.connect(self.create_change_data_handler(button_data["id"], button_data["color"]))
+            button_layout.addWidget(button)
+        self.main_layout.addLayout(button_layout)
 
-            button.setStyleSheet(
-                f"""
-                QPushButton {{
-                    background-color: #ffa474;
+        nav_layout = QHBoxLayout()
+        button_back = QPushButton('<-')
+        button_next = QPushButton('->')
+
+        for btn in [button_back, button_next]:
+            btn.setStyleSheet(
+                """
+                QPushButton {
+                    background-color: #004953;
                     color: #fcfcee;
                     font-size: 16px;
                     font-weight: bold;
                     border-radius: 10px;
                     padding: 10px;
-                }}
-                QPushButton:hover {{
-                    background-color: #fdd9b5;
-                }}
-                """)
+                }
+                QPushButton:hover {
+                    background-color: #2a6478;
+                }
+                """
+            )
 
-            button.clicked.connect(lambda checked, index=f"{i['id']}-{i['color']}": self.change_data(index))
-            self.buttons.append(button)
-            button_layout.addWidget(button)
+        button_back.clicked.connect(self.back)
+        button_next.clicked.connect(self.next)
+        nav_layout.addWidget(button_back)
+        nav_layout.addWidget(button_next)
 
-        layout.addLayout(button_layout)
-        horisontal_box = QHBoxLayout()
-        button1 = QPushButton('<-')
-        button1.setStyleSheet(
-            f"""
-                                   QPushButton {{
-                                       background-color: #ffa474;
-                                       color: #fcfcee;
-                                       font-size: 16px;
-                                       font-weight: bold;
-                                       border-radius: 10px;
-                                       padding: 10px;
-                                   }}
-                                   QPushButton:hover {{
-                                       background-color: #fdd9b5;
-                                   }}
-                                   """)
+        self.main_layout.addLayout(nav_layout)
 
-        button2 = QPushButton('->')
-        button2.setStyleSheet(
-            f"""
-                                   QPushButton {{
-                                       background-color: #ffa474;
-                                       color: #fcfcee;
-                                       font-size: 16px;
-                                       font-weight: bold;
-                                       border-radius: 10px;
-                                       padding: 10px;
-                                   }}
-                                   QPushButton:hover {{
-                                       background-color: #fdd9b5;
-                                   }}
-                                   """)
+    def clear_layout(self, layout):
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+            else:
+                sub_layout = item.layout()
+                if sub_layout:
+                    self.clear_layout(sub_layout)
 
-        button1.clicked.connect(self.back)
-        button2.clicked.connect(self.next)
-        horisontal_box.addWidget(button1)
-        horisontal_box.addWidget(button2)
-        layout.addLayout(horisontal_box)
-
-        if self.layout() is not None:
-            for i in reversed(range(self.layout().count())):
-                widget = self.layout().itemAt(i).widget()
-                if widget is not None:
-                    widget.deleteLater()
-        self.setLayout(layout)
+    def create_change_data_handler(self, id, color):
+        return lambda: self.change_data(id, color)
 
     def back(self):
-        if self.index != 0:
+        if self.index > 0:
             self.index -= 1
             self.create_button(self.index)
 
     def next(self):
-        if len(self.button_list) - 1 != self.index:
+        if self.index < len(self.button_list) - 1:
             self.index += 1
             self.create_button(self.index)
 
-    def change_data(self, index):
-        id, color = index.split('-')
+    def change_data(self, id, color):
         delete_data(id, color)
+        self.create_button(self.index)
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Icon.Information)
         msg_box.setText("Данные удалены")
@@ -130,6 +143,3 @@ class Window4(QWidget):
         msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
 
         msg_box.exec()
-
-
-

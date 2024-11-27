@@ -17,7 +17,7 @@ class ImageTextLabel(QLabel):
 
         pixmap = QPixmap(self.image_path).scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatioByExpanding)
 
-        font = QFont("Arial", 50, QFont.Weight.Bold)
+        font = QFont("Arial", 40, QFont.Weight.Bold)
         painter.setFont(font)
 
         path = QPainterPath()
@@ -35,7 +35,7 @@ class Line_widget(QWidget):
 
         def paintEvent(self, event):
            painter =  QPainter(self)
-           painter.setPen(QPen(QColor(255, 234, 172), 5))
+           painter.setPen(QPen(QColor(0, 47, 108), 7))
            painter.drawLine(0, 1, self.width(), 1)
 
 

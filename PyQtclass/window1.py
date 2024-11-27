@@ -15,8 +15,18 @@ class Window1(QWidget):
         line = Line_widget()
         layout.addWidget(line)
         input = QLabel('Получено всего')
-        output = QLabel('Потрачено всего')
         input.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+        output = QLabel('Потрачено всего')
+        output.setStyleSheet("""
                     QLabel {
                         font-size: 24px;
                         font-family: 'Arial';
@@ -44,12 +54,33 @@ class Window1(QWidget):
                     }
                 """)
         self.all_output = QLabel()
+        self.all_output.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                background-color: rgba(128, 128, 128, 150);
+                                color: white;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
 
 
         layout_input.addWidget(self.all_input)
         layout_input.addWidget(self.all_output)
 
         balance  = QLabel('Доступно на данный момент')
+        balance.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
         self.balance_text = QLabel()
         self.balance_text.setStyleSheet("""
                             QLabel {

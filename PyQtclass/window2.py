@@ -6,20 +6,56 @@ class Window2(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        label = ImageTextLabel('Поступление средств', 'image/title/forest.jpeg')
+        label = ImageTextLabel('Пополнения', 'image/title/forest.jpeg')
         layout.addWidget(label)
 
         line = Line_widget()
         layout.addWidget(line)
 
-        data = QLabel('Введите дату поступления средств')
+        data = QLabel('Введите дату пополнения счёта')
+        data.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+
         self.data_input = QDateEdit()
         self.data_input.setDisplayFormat('dd.MM.yyyy')
 
         money = QLabel('Введите количество полученных денег')
+        money.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+
         self.money_input = QLineEdit()
 
         button = QPushButton('Отправить')
+        button.setStyleSheet(
+            f"""
+                                    QPushButton {{
+                                        background-color: #004953;
+                                        color: #fcfcee;
+                                        font-size: 16px;
+                                        font-weight: bold;
+                                        border-radius: 10px;
+                                        padding: 10px;
+                                    }}
+                                    QPushButton:hover {{
+                                        background-color: #2a6478;
+                                    }}
+                                    """)
         button.clicked.connect(self.get_money)
 
 

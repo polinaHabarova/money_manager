@@ -30,12 +30,11 @@ class MainWindow(QMainWindow):
         self.buttons = []
         button_widget = QWidget()
         for i in range(5):
-            button = QPushButton(f"Window{i + 1}")
-
+            button = QPushButton(f"Страница {i + 1}")
             button.setStyleSheet(
                 f"""
                             QPushButton {{
-                                background-color: #ffa474;
+                                background-color: #004953;
                                 color: #fcfcee;
                                 font-size: 16px;
                                 font-weight: bold;
@@ -43,7 +42,7 @@ class MainWindow(QMainWindow):
                                 padding: 10px;
                             }}
                             QPushButton:hover {{
-                                background-color: #fdd9b5;
+                                background-color: #2a6478;
                             }}
                             """)
 
@@ -62,7 +61,7 @@ class MainWindow(QMainWindow):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        pixmap = QPixmap("image\\title\\fon.jpg")
+        pixmap = QPixmap("image\\title\\fon2.jpg")
         painter.drawPixmap(self.rect(), pixmap)
 
     def switch_window(self, index):

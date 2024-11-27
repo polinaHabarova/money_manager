@@ -6,7 +6,7 @@ class Window3(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        label = ImageTextLabel('Вывод денег', 'image/title/forest.jpeg')
+        label = ImageTextLabel('Расходы', 'image/title/forest.jpeg')
         layout.addWidget(label)
 
         line = Line_widget()
@@ -14,18 +14,65 @@ class Window3(QWidget):
         self.setLayout(layout)
 
         data = QLabel('Введите дату траты средств')
+        data.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+
         self.data_input = QDateEdit()
         self.data_input.setDisplayFormat('dd.MM.yyyy')
 
         money = QLabel('Введите количество потраченных денег')
+        money.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+
         self.money_input = QLineEdit()
 
         category = QLabel('Выберите категорию на которую были потрачены деньги')
+        category.setStyleSheet("""
+                            QLabel {
+                                font-size: 24px;
+                                font-family: 'Arial';
+                                color: black;
+                                padding: 20px;  
+                                border-radius: 10px;
+                                text-align: center;
+                            }
+                        """)
+
         self.category_input = QComboBox()
         self.category_input.addItems(['Образование', 'Развлечения', 'Еда', 'Прочее'])
 
 
         button = QPushButton('Отправить')
+        button.setStyleSheet(
+            f"""
+                                    QPushButton {{
+                                        background-color: #004953;
+                                        color: #fcfcee;
+                                        font-size: 16px;
+                                        font-weight: bold;
+                                        border-radius: 10px;
+                                        padding: 10px;
+                                    }}
+                                    QPushButton:hover {{
+                                        background-color: #2a6478;
+                                    }}
+                                    """)
         button.clicked.connect(self.spend_money)
 
         layout.addWidget(data)
